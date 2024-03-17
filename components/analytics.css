@@ -1,0 +1,44 @@
+/* CSS for Analytics Blocks */
+.analytics-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+  }
+  
+  .analytics-heading {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .analytics-item {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+  
+  .analytics-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .analytics-list-item {
+    margin-left: 20px;
+  }
+
+  .grid-block {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    gap: 10%;
+  }
+
+  .img-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .img-container img {
+    width: 100%;
+    border-radius: 50%;
+  }
+  
