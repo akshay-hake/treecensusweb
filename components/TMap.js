@@ -57,12 +57,15 @@ export default function TMap(props) {
     let pts = [];
     let tdata = [];
 
+    console.log(props.data[0])
+
     for (i = 0; i < props.data.length; i++) {
       let d = props.data[i]
 
       if (d["lat"] && d["lon"]) {
 
         let detail = {
+          ...d,
           ward: d['Ward'],
           sno: d["sno"],
           tname: d["TreeName"],
@@ -106,10 +109,12 @@ export default function TMap(props) {
   }, [isFiltered]);
 
   const filter = () => {
+    console.log(props.data[0])
     let map = {};
     let pts = [];
     filteredData?.forEach((d) => {
       let detail = {
+        ...d,
         ward: d['ward'],
         sno: d["sno"],
         tname: d["tname"],
@@ -199,13 +204,21 @@ export default function TMap(props) {
           )}
         </div>
         {selectedTree && <div class="card">
-          <div class="card-item">
-            <span class="detail-label">Age:</span>
-            <span class="detail-value">{selectedTree.age}</span>
+        <div class="card-item">
+            <span class="detail-label">Serial No.:</span>
+            <span class="detail-value">{selectedTree.sno}</span>
           </div>
           <div class="card-item">
-            <span class="detail-label">Height:</span>
-            <span class="detail-value">{selectedTree.height}</span>
+            <span class="detail-label">Ward:</span>
+            <span class="detail-value">{selectedTree.ward}</span>
+          </div>
+          <div class="card-item">
+            <span class="detail-label">Tree Name:</span>
+            <span class="detail-value">{selectedTree.tname}</span>
+          </div>
+        <div class="card-item">
+            <span class="detail-label">Scientific Name:</span>
+            <span class="detail-value">{selectedTree.scientificName}</span>
           </div>
           <div class="card-item">
             <span class="detail-label">Latitude:</span>
@@ -216,13 +229,35 @@ export default function TMap(props) {
             <span class="detail-value">{selectedTree.lng}</span>
           </div>
           <div class="card-item">
-            <span class="detail-label">Tree Name:</span>
-            <span class="detail-value">{selectedTree.tname}</span>
+            <span class="detail-label">Age:</span>
+            <span class="detail-value">{selectedTree.age}</span>
           </div>
           <div class="card-item">
-            <span class="detail-label">Ward:</span>
-            <span class="detail-value">{selectedTree.ward}</span>
+            <span class="detail-label">Height:</span>
+            <span class="detail-value">{selectedTree.height}</span>
           </div>
+          <div class="card-item">
+            <span class="detail-label">Girth:</span>
+            <span class="detail-value">{selectedTree.girth}</span>
+          </div>
+          <div class="card-item">
+            <span class="detail-label">Condition:</span>
+            <span class="detail-value">{selectedTree.condition}</span>
+          </div>
+          <div class="card-item">
+            <span class="detail-label">Landmark:</span>
+            <span class="detail-value">{selectedTree.landmark}</span>
+          </div>
+          <div class="card-item">
+            <span class="detail-label">Concern Person:</span>
+            <span class="detail-value">{selectedTree.cperson}</span>
+          </div>
+          <div class="card-item">
+            <span class="detail-label">Ownership:</span>
+            <span class="detail-value">{selectedTree.ownership}</span>
+          </div>
+          
+          
         </div>}
 
         {directions && <Distance leg={directions.routes[0].legs[0]} detail={selectedTree} />}

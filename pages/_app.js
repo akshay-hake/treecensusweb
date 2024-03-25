@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Commute?</title>
+        <title>Tree Census</title>
       </Head>
       <Component {...pageProps} />
     </>

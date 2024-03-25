@@ -259,12 +259,18 @@ function CSVFileReader(props) {
         const treeName = values[headers.indexOf('Tree Name')];
         const canopy = parseFloat(values[headers.indexOf('Canopy (sq. mtr)')]);
         analytics.uniqueTrees.add(treeName);
-        const sno = values[headers.indexOf('Sr. No')]
+        const sno = values[headers.indexOf('SR. No')]
         const lat = parseFloat(values[headers.indexOf('Latitude')]);
         const lon = parseFloat(values[headers.indexOf('Longitude')]);
         const height = parseFloat(values[headers.indexOf('Height (Ft)')]);
         const age = values[headers.indexOf('Age (Years)')];
-        return { Ward: ward, TreeName: treeName, Canopy: canopy, sno: sno, lat: lat, lon: lon, height: height, age: age };
+        const scientificName = values[headers.indexOf('Scientific Name')];
+        const girth =  values[headers.indexOf('Girth (Inch)')];
+        const condition =  values[headers.indexOf('Condition')];
+        const landmark =  values[headers.indexOf('Landmark')];
+        const cperson =  values[headers.indexOf('Concern Person')];
+        const ownership =  values[headers.indexOf('ownership')];
+        return { Ward: ward, TreeName: treeName, Canopy: canopy, sno: sno, lat: lat, lon: lon, height: height, age: age, scientificName, girth, condition, landmark, cperson, ownership };
       });
       console.log("raw", rowData)
       resolve(rowData);
@@ -276,6 +282,8 @@ function CSVFileReader(props) {
     const wardCounts = {};
     let totalCanopy = 0;
     const wardCanopy = {};
+    const totalHeritage = 0;
+    const totalNormalTrees = 0;
 
     for (const fileData of data) {
       for (const row of fileData) {
@@ -286,6 +294,13 @@ function CSVFileReader(props) {
           totalCanopy += row.Canopy;
           wardCanopy[ward] = (wardCanopy[ward] || 0) + row.Canopy;
         }
+
+        if(row.age == "heritage") {
+          totalHeritage++;
+        }
+        else {
+          totalNormalTrees++;
+        }
       }
     }
 
@@ -295,8 +310,31 @@ function CSVFileReader(props) {
       wardCounts,
       totalCanopy,
       wardCanopy,
+      totalHeritageTrees : totalHeritage,
+      totalNormalTrees
     });
   };
+
+  function getCityName(uname) {
+    switch(uname) {
+      case "manwath" : return "Manwath Municipal Council"
+    }
+    return uname;
+  }
+
+  function getReportLink(uname) {
+    switch(uname) {
+      case "manwath" : return "https://drive.google.com/drive/folders/1Ots-MgipjhEkQvwsGtu1hFwO72NjFyrH"
+    }
+    return "";
+  }
+
+  function getTreeCuttingLink(uname) {
+    switch(uname) {
+      case "manwath" : return "https://drive.google.com/drive/folders/1Ots-MgipjhEkQvwsGtu1hFwO72NjFyrH"
+    }
+    return "";
+  }
 
   return (
     loading ? <div className="load-wrapp">
@@ -330,21 +368,22 @@ function CSVFileReader(props) {
 
         <div
           className={`nav-option`}
-          onClick={() => {}}
+          onClick={() => {handleOptionClick('report')}}
         >
           Report
         </div>
 
         <div
           className={`nav-option`}
-          onClick={() => {}}
+          onClick={() => {handleOptionClick('tree-cutting')}}
         >
-          Tree Cutting
+          Tree Pruning & Cutting
         </div>
       </div>
       <div>
-        <div className="content">
-        <h1 style={{textAlign:"center"}}>{props.user?.toUpperCase()} TREE CENSUS</h1>
+        <div >
+        <h1 style={{textAlign:"center"}}>{getCityName(props.user)} </h1>
+        <h1 style={{textAlign:"center"}}>Tree Census</h1>
           {selectedOption == 'input' && (
             <div className="dashboard-content">
               {/* Render your dashboard content here */}
@@ -427,8 +466,26 @@ function CSVFileReader(props) {
                       <div className='grid-block'>
                         <div className='img-container'><img src={'/images/trees.jpg'} alt='Trees' /></div>
                         <div>
+                          <h2 className="analytics-heading">Total Normal trees</h2>
+                          <p className="analytics-item">{analytics.totalNormalTrees ? analytics.totalNormalTrees : 0}</p>
+                          {/* <ul className="analytics-list">
+                        {Object.entries(analytics.wardCanopy).map(([ward, canopy]) => (
+                          <li key={ward} className="analytics-list-item">
+                            Ward {ward}: {canopy}
+                          </li>
+                        ))}
+                      </ul> */}
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div className="analytics-block">
+                      <div className='grid-block'>
+                        <div className='img-container'><img src={'/images/trees.jpg'} alt='Trees' /></div>
+                        <div>
                           <h2 className="analytics-heading">Total Heritage trees</h2>
-                          <p className="analytics-item">{0}</p>
+                          <p className="analytics-item">{analytics.totalHeritageTrees ? analytics.totalHeritageTrees : 0}</p>
                           {/* <ul className="analytics-list">
                         {Object.entries(analytics.wardCanopy).map(([ward, canopy]) => (
                           <li key={ward} className="analytics-list-item">
@@ -512,6 +569,22 @@ function CSVFileReader(props) {
             <div className="map-content">
               {/* Render your map content here */}
               <TMap data={tableData.flat()} />
+            </div>
+          )}
+
+{selectedOption === 'report' && (
+            <div className="dashboard-content">
+
+            <h1 className='page-heading' style={{marginBottom:"5vh"}}>Report</h1>
+              <a href={getReportLink(props.user)} target='_blank' className='link-data'> Tree Census Report</a>
+            </div>
+          )}
+
+{selectedOption === 'tree-cutting' && (
+            <div className="dashboard-content">
+
+            <h1 className='page-heading' style={{marginBottom:"5vh"}}>Tree Pruning & Cutting</h1>
+              <a href={getTreeCuttingLink(props.user)} target='_blank' className='link-data'> Tree Pruning & Cutting Permission</a>
             </div>
           )}
         </div>

@@ -142,7 +142,7 @@ export default function Map() {
   return (
     <div className="container">
       <div className="controls">
-        <h1>Commute?</h1>
+        <h1>Tree Census</h1>
         <div>
           <input type="file" onChange={onChange} />
           <input
