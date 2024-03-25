@@ -146,6 +146,7 @@ function CSVFileReader(props) {
     const wardStats = {};
     data.forEach(wardData => {
       wardData.forEach(tree => {
+        if(tree.TreeName) {
         const wardNo = tree.Ward;
         const canopy = tree.Canopy || 0;
         const age = tree.age || "";
@@ -171,6 +172,7 @@ function CSVFileReader(props) {
 
         // Adding tree to unique trees set
         wardStats[wardNo].uniqueTrees.add(tree.TreeName);
+      }
       });
     });
 
@@ -287,6 +289,7 @@ function CSVFileReader(props) {
 
     for (const fileData of data) {
       for (const row of fileData) {
+        if(row.Canopy) {
         totalRecords++;
         const ward = row.Ward;
         wardCounts[ward] = (wardCounts[ward] || 0) + 1;
@@ -301,6 +304,10 @@ function CSVFileReader(props) {
         else {
           totalNormalTrees++;
         }
+      }
+      else {
+        console.log(row)
+      }
       }
     }
 
